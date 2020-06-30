@@ -2,6 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>ManglingImgui</PackageId>
+    <Version>1.0.0</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>ousttrue</Authors>
+    <RepositoryUrl>https://github.com/ousttrue/ManglingImgui</RepositoryUrl>
+    <PackageTags>imgui;d3d11</PackageTags>
+    <Copyright>Copyright (c) 2020 ousttrue</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <Description>
+      This package contains Dllimport functions, enums, structs(union) and constants(define). They are generated
+      from imgui.h information that is parsed by libclang.
+      This package use imgui.dll(c++) directly and resolve mangled name.
+      Function overload is implemented by C# optional argument and overload in C#.
+      Only Windows10 64bit.
+    </Description>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="runtimes\**" Pack="true" PackagePath="runtimes" />
+    <!-- runtimes/win-x64/native/imgui.dll -->
+  </ItemGroup>
 
 </Project>
