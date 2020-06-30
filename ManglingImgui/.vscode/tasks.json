@@ -1,0 +1,59 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "generate",
+            "type": "shell",
+            "command": "dotnet.exe",
+            "args": [
+                "run",
+                "--",
+                "-exportonly",
+                "-D",
+                "IMGUI_API=__declspec`(dllexport`)", // powershell escape
+                "-ns",
+                "ManglingImgui",
+                "-out",
+                "${workspaceFolder}/ManglingImgui",
+                "-using",
+                "System.Numerics",
+                "-target",
+                "netstandard2.1",
+                "-I",
+                "../../imgui",
+                "-h",
+                "../../imgui/imgui.h,imgui.dll",
+                "-h",
+                "../../imgui/examples/imgui_impl_win32.h,imgui.dll",
+                "-h",
+                "../../imgui/examples/imgui_impl_dx11.h,imgui.dll",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/../ClangCaster/ClangCaster",
+                "env": {
+                    "PATH": "${env:PATH};C:\\Program Files\\LLVM\\bin"
+                }
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
