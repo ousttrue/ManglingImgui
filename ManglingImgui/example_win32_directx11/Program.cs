@@ -94,7 +94,7 @@ namespace example_win32_directx11
 #endif
             // Setup Dear ImGui style
             ManglingImgui.imgui.StyleColorsDark();
-            //ImGui::StyleColorsClassic();
+            //ManglingImgui.imgui.StyleColorsClassic();
 
             // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
             var stylePtr = ManglingImgui.imgui.GetStyle();
@@ -111,11 +111,15 @@ namespace example_win32_directx11
 
             // Our state
             var show_demo_window = new[] { true };
-            bool show_another_window = false;
+            var show_another_window = new[] { false };
             var clear_color = new Vector4(0.45f, 0.55f, 0.60f, 1.00f);
 
             // Main loop
             MSG msg = default;
+
+            float f = 0.0f;
+            int counter = 0;
+
             // ZeroMemory(&msg, sizeof(msg));
             while (msg.message != NWindowsKits.C.WM_QUIT)
             {
@@ -136,11 +140,44 @@ namespace example_win32_directx11
                 ManglingImgui.imgui.ImGui_ImplWin32_NewFrame();
                 ManglingImgui.imgui.NewFrame();
 
-                // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+                // 1. Show the big demo window (Most of the sample code is in ManglingImgui.imgui.ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
                 if (show_demo_window[0])
                 {
                     using var pin = Pin.Create(show_demo_window);
                     ManglingImgui.imgui.ShowDemoWindow(pin);
+                }
+
+                // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+                {
+                    ManglingImgui.imgui.Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+                    ManglingImgui.imgui.Text("This is some useful text.");               // Display some text (you can use a format strings too)
+                    ManglingImgui.imgui.Checkbox("Demo Window", ref show_demo_window[0]);      // Edit bools storing our window open/close state
+                    ManglingImgui.imgui.Checkbox("Another Window", ref show_another_window[0]);
+
+                    ManglingImgui.imgui.SliderFloat("float", ref f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+                    ManglingImgui.imgui.ColorEdit3("clear color", ref clear_color.W); // Edit 3 floats representing a color
+
+                    if (ManglingImgui.imgui.Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+                        counter++;
+                    ManglingImgui.imgui.SameLine();
+                    ManglingImgui.imgui.Text($"counter = {counter}");
+
+                    var p = ManglingImgui.imgui.GetIO();
+                    var i = (ManglingImgui.ImGuiIO)Marshal.PtrToStructure(p, typeof(ManglingImgui.ImGuiIO));
+                    ManglingImgui.imgui.Text($"Application average {1000.0f / i.Framerate:F3} ms/frame ({i.Framerate:F1} FPS)");
+                    ManglingImgui.imgui.End();
+                }
+
+                // 3. Show another simple window.
+                if (show_another_window[0])
+                {
+                    using var pin = Pin.Create(show_another_window);
+                    ManglingImgui.imgui.Begin("Another Window", pin);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                    ManglingImgui.imgui.Text("Hello from another window!");
+                    if (ManglingImgui.imgui.Button("Close Me"))
+                        show_another_window[0] = false;
+                    ManglingImgui.imgui.End();
                 }
 
                 // Rendering
@@ -245,6 +282,7 @@ namespace example_win32_directx11
         // Win32 message handler
         static long WndProc(HWND hWnd, uint msg, ulong wParam, long lParam)
         {
+            // TODO:
             // if (ManglingImgui.imgui.ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
             //     return 1;
 
@@ -282,38 +320,3 @@ namespace example_win32_directx11
         }
     }
 }
-
-//         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-//         {
-//             static float f = 0.0f;
-//             static int counter = 0;
-
-//             ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-//             ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-//             ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-//             ImGui::Checkbox("Another Window", &show_another_window);
-
-//             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-//             ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-//             if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-//                 counter++;
-//             ImGui::SameLine();
-//             ImGui::Text("counter = %d", counter);
-
-//             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-//             ImGui::End();
-//         }
-
-//         // 3. Show another simple window.
-//         if (show_another_window)
-//         {
-//             ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-//             ImGui::Text("Hello from another window!");
-//             if (ImGui::Button("Close Me"))
-//                 show_another_window = false;
-//             ImGui::End();
-//         }
-
-//     }
