@@ -13,8 +13,10 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
-            "console": "internalConsole"
+            "console": "internalConsole",
+            "env": {
+                "PATH": "${env:PATH};${workspaceFolder}\\..\\dll\\build\\Debug\\bin",
+            }
         }
-
     ]
 }
