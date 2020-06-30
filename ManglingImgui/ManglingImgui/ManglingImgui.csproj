@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>ManglingImgui</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.2</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>ousttrue</Authors>
     <RepositoryUrl>https://github.com/ousttrue/ManglingImgui</RepositoryUrl>
@@ -17,12 +17,10 @@
       Function overload is implemented by C# optional argument and overload in C#.
       Only Windows10 64bit.
     </Description>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="runtimes\**" Pack="true" PackagePath="runtimes" />
-    <!-- runtimes/win-x64/native/imgui.dll -->
+    <Content Include="runtimes/win-x64/native/imgui.dll" Pack="true" PackagePath="runtimes/win-x64/native"/>
   </ItemGroup>
 
 </Project>
