@@ -156,7 +156,7 @@ namespace example_win32_directx11
                     ManglingImgui.imgui.Checkbox("Another Window", ref show_another_window[0]);
 
                     ManglingImgui.imgui.SliderFloat("float", ref f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-                    ManglingImgui.imgui.ColorEdit3("clear color", ref clear_color.W); // Edit 3 floats representing a color
+                    ManglingImgui.imgui.ColorEdit3("clear color", ref clear_color.X); // Edit 3 floats representing a color
 
                     if (ManglingImgui.imgui.Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                         counter++;
@@ -183,7 +183,7 @@ namespace example_win32_directx11
                 // Rendering
                 ManglingImgui.imgui.Render();
                 g_pd3dDeviceContext.OMSetRenderTargets(1, ref g_mainRenderTargetView.Ptr, default);
-                g_pd3dDeviceContext.ClearRenderTargetView(g_mainRenderTargetView.Ptr, ref clear_color.W);
+                g_pd3dDeviceContext.ClearRenderTargetView(g_mainRenderTargetView.Ptr, ref clear_color.X);
                 var drawDataPtr = ManglingImgui.imgui.GetDrawData();
                 var drawData = (ManglingImgui.ImDrawData)Marshal.PtrToStructure(drawDataPtr, typeof(ManglingImgui.ImDrawData));
                 ManglingImgui.imgui.ImGui_ImplDX11_RenderDrawData(ref drawData);
